@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:midterm/screen/homeWidget.dart';
 import 'package:midterm/screen/nearMeWidget.dart';
 
 void main() {
-  runApp(route("nearMe"));
+  runApp(route("home"));
 }
 
 route(String context) {
@@ -11,6 +12,7 @@ route(String context) {
     debugShowCheckedModeBanner: false,
     routes: {
       'nearMe': (context) => NearMeWidget(),
+      'home': (context) => HomeWidget()
     },
   );
 }
