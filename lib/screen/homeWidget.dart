@@ -17,13 +17,13 @@ class _HomeWidgetState extends State<HomeWidget> {
   double width = 0;
   int currentMenu = 0;
   int index = 1;
+  bool isActive = false;
+  Icon leadingIcon = Icon(Icons.menu);
   CarouselController buttonCarouselController = CarouselController();
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      key: scaffoldKey,
-      drawer: NavBar(),
       appBar: AppBar(
         title: const Text(
           "Home",
@@ -31,9 +31,11 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
         leadingWidth: 30,
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: leadingIcon,
           onPressed: () {
-            scaffoldKey.currentState!.openDrawer();
+            isActive
+                ? scaffoldKey.currentState!.closeDrawer()
+                : scaffoldKey.currentState!.openDrawer();
           },
         ),
         backgroundColor: Colors.green,
@@ -45,131 +47,150 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Widget body() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        CarouselSlider(
-          carouselController: buttonCarouselController,
-          items: [
-            //1st Image of Slider
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
-                  fit: BoxFit.cover,
+    return Scaffold(
+      key: scaffoldKey,
+      drawer: NavBar(),
+      onDrawerChanged: (isClosed) {
+        getIconButton();
+      },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          CarouselSlider(
+            carouselController: buttonCarouselController,
+            items: [
+              //1st Image of Slider
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
 
-            //2nd Image of Slider
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
-                  fit: BoxFit.cover,
+              //2nd Image of Slider
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
 
-            //3rd Image of Slider
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
-                  fit: BoxFit.cover,
+              //3rd Image of Slider
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
 
-            //4th Image of Slider
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      "https://th.bing.com/th/id/OIP.MmWgDAzuCouLskJujAo4MgHaFj?pid=ImgDet&rs=1"),
-                  fit: BoxFit.cover,
+              //4th Image of Slider
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://th.bing.com/th/id/OIP.MmWgDAzuCouLskJujAo4MgHaFj?pid=ImgDet&rs=1"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
 
-            //5th Image of Slider
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
-                  fit: BoxFit.cover,
+              //5th Image of Slider
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
 
-          //Slider Container properties
-          options: CarouselOptions(
-            initialPage: index - 1,
-            height: 180.0,
-            enlargeCenterPage: true,
-            autoPlay: true,
-            aspectRatio: 16 / 9,
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enableInfiniteScroll: true,
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            autoPlayInterval: const Duration(milliseconds: 15000),
-            viewportFraction: 1,
-            onPageChanged: (index, reason) {
-              setState(() {
-                currentMenu = index + 1;
-              });
-              print(index);
-            },
+            //Slider Container properties
+            options: CarouselOptions(
+              initialPage: index - 1,
+              height: 180.0,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              autoPlayInterval: const Duration(milliseconds: 15000),
+              viewportFraction: 1,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  currentMenu = index + 1;
+                });
+                print(index);
+              },
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 20,
-              child: menuItemWidget(1),
-            ),
-            SizedBox(
-              width: 20,
-              child: menuItemWidget(2),
-            ),
-            SizedBox(
-              width: 20,
-              child: menuItemWidget(3),
-            ),
-            SizedBox(
-              width: 20,
-              child: menuItemWidget(4),
-            ),
-            SizedBox(
-              width: 20,
-              child: menuItemWidget(5),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        getCategory('Near Me'),
-        const SizedBox(
-          height: 50,
-        ),
-        getCategory('Top Places')
-      ],
+          const SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 20,
+                child: menuItemWidget(1),
+              ),
+              SizedBox(
+                width: 20,
+                child: menuItemWidget(2),
+              ),
+              SizedBox(
+                width: 20,
+                child: menuItemWidget(3),
+              ),
+              SizedBox(
+                width: 20,
+                child: menuItemWidget(4),
+              ),
+              SizedBox(
+                width: 20,
+                child: menuItemWidget(5),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          getCategory('Near Me'),
+          const SizedBox(
+            height: 50,
+          ),
+          getCategory('Top Places')
+        ],
+      ),
     );
+  }
+
+  void getIconButton() {
+    isActive
+        ? setState(() {
+            leadingIcon = Icon(Icons.menu);
+            isActive = false;
+          })
+        : setState(() {
+            leadingIcon = Icon(Icons.arrow_back);
+            isActive = true;
+          });
   }
 
   Widget menuItemWidget(int number) {
