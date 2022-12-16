@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:midterm/screen/navBarWidget.dart';
 
 class HomeWidget extends StatefulWidget {
   HomeWidget({Key? key}) : super(key: key);
@@ -12,21 +13,28 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  double width = 0;
   int currentMenu = 0;
   int index = 1;
   CarouselController buttonCarouselController = CarouselController();
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
+      key: scaffoldKey,
+      drawer: NavBar(),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Home",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         leadingWidth: 30,
         leading: IconButton(
           icon: Icon(Icons.menu),
-          onPressed: () {},
+          onPressed: () {
+            scaffoldKey.currentState!.openDrawer();
+          },
         ),
         backgroundColor: Colors.green,
         iconTheme: IconThemeData(color: Colors.white),
@@ -38,6 +46,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   Widget body() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CarouselSlider(
           carouselController: buttonCarouselController,
@@ -46,7 +55,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
                   fit: BoxFit.cover,
@@ -58,7 +67,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
                   fit: BoxFit.cover,
@@ -70,7 +79,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
                   fit: BoxFit.cover,
@@ -82,7 +91,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       "https://th.bing.com/th/id/OIP.MmWgDAzuCouLskJujAo4MgHaFj?pid=ImgDet&rs=1"),
                   fit: BoxFit.cover,
@@ -94,7 +103,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       "https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1"),
                   fit: BoxFit.cover,
@@ -112,8 +121,8 @@ class _HomeWidgetState extends State<HomeWidget> {
             aspectRatio: 16 / 9,
             autoPlayCurve: Curves.fastOutSlowIn,
             enableInfiniteScroll: true,
-            autoPlayAnimationDuration: Duration(milliseconds: 800),
-            autoPlayInterval: Duration(milliseconds: 15000),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            autoPlayInterval: const Duration(milliseconds: 15000),
             viewportFraction: 1,
             onPageChanged: (index, reason) {
               setState(() {
@@ -123,7 +132,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             },
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 12,
         ),
         Row(
@@ -150,7 +159,15 @@ class _HomeWidgetState extends State<HomeWidget> {
               child: menuItemWidget(5),
             ),
           ],
-        )
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        getCategory('Near Me'),
+        const SizedBox(
+          height: 50,
+        ),
+        getCategory('Top Places')
       ],
     );
   }
@@ -169,5 +186,76 @@ class _HomeWidgetState extends State<HomeWidget> {
           });
         },
         child: icon);
+  }
+
+  Widget getCategory(String text) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: width * 0.08,
+            ),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.black54,
+              ),
+            ),
+            SizedBox(
+              width: width * 0.5,
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "More",
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              getImage(rigth: 10, left: 25),
+              getImage(rigth: 10),
+              getImage(rigth: 10),
+              getImage(rigth: 10),
+              getImage(rigth: 10),
+              getImage(rigth: 10)
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget getImage({double rigth = 0, double left = 0}) {
+    return Container(
+      padding: EdgeInsets.only(left: left, right: rigth),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6.0),
+            child: Image.network(
+              'https://th.bing.com/th/id/OIP.fVskLfV-gK8qLYzrYPFYCwHaFj?pid=ImgDet&rs=1',
+              fit: BoxFit.cover,
+              width: width * 0.4,
+              height: 100,
+            ),
+          ),
+          Text(
+            "Royal Palace",
+            style: TextStyle(color: Colors.grey),
+          )
+        ],
+      ),
+    );
   }
 }
